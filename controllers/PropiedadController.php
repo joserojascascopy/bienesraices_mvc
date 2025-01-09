@@ -8,10 +8,10 @@ use Model\Vendedor;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
-$router = new Router();
-
-class PropiedadController {
-    public static function index($router) {
+class PropiedadController
+{
+    public static function index(Router $router)
+    {
         $propiedades = Propiedad::all();
         $resultado = $_GET['resultado'] ?? null;
 
@@ -21,7 +21,8 @@ class PropiedadController {
         ]);
     }
 
-    public static function crear($router) {
+    public static function crear(Router $router)
+    {
         $propiedad = new Propiedad;
         $vendedores = Vendedor::all();
         $errores = Propiedad::getErrores();
@@ -82,7 +83,80 @@ class PropiedadController {
         ]);
     }
 
-    public static function actualizar() {
-        echo "Actualizar Propiedad";
+    public static function actualizar(Router $router)
+    {
+        $id = validarORedireccionar('/admin');
+
+        $propiedad = Propiedad::find($id);
+        $errores = Propiedad::getErrores();
+        $vendedores = Vendedor::all();
+
+        // Ejecutar el codigo despues de que el usuario envia el formulario
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            // Asignar los atributos
+
+            $args = $_POST['propiedad'];
+
+            $propiedad->sincronizar($args);
+
+            // Validacion
+
+            $errores = $propiedad->validar();
+
+            // Genera un nombre unico
+
+            $carpetaImagenes = CARPETA_IMAGENES;
+
+            $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
+
+            if ($_FILES['imagen']['tmp_name']) {
+                $manager = new ImageManager(new Driver());
+                $image = $manager->read($_FILES['imagen']['tmp_name'])->resize(800, 600);
+                $propiedad->setImagen($nombreImagen);
+            }
+
+            // Revisar si el array de errores esta vacio
+
+            if (empty($errores)) {
+                // Almacenar la imagen
+
+                if (isset($image)) {
+                    $image->save($carpetaImagenes . $nombreImagen);
+                }
+
+                $resultado = $propiedad->guardar();
+
+                if ($resultado) {
+                    // Redireccionar al usuario para que no vuelvan a enviar el mismo formulario, o duplicar entradas en la base de datos
+                    header('Location: /admin?resultado=2');
+                }
+            }
+        }
+
+        $router->render('propiedades/actualizar', [
+            'propiedad' => $propiedad,
+            'errores' => $errores,
+            'vendedores' => $vendedores,
+        ]);
+    }
+
+    public static function eliminar()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Validar id
+            $id = $_POST['id'];
+            $id = filter_var($id, FILTER_VALIDATE_INT);
+
+            if ($id) {
+                $propiedad = Propiedad::find($id);
+
+                $resultado = $propiedad->eliminar();
+
+                if ($resultado) {
+                    header('Location: /admin?resultado=3');
+                }
+            }
+        }
     }
 }
