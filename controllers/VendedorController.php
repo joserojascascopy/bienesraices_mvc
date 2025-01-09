@@ -82,19 +82,25 @@ class VendedorController
         ]);
     }
 
-    public static function eliminar() {
+    public static function eliminar()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Validar id
             $id = $_POST['id'];
             $id = filter_var($id, FILTER_VALIDATE_INT);
 
             if ($id) {
-                $vendedor = Vendedor::find($id);
+                // Validar por tipo
+                $tipo = $_POST['tipo'];
 
-                $resultado = $vendedor->eliminar();
+                if (validarTipoContenido($tipo)) {
+                    $vendedor = Vendedor::find($id);
 
-                if ($resultado) {
-                    header('Location: /admin?resultado=4');
+                    $resultado = $vendedor->eliminar();
+
+                    if ($resultado) {
+                        header('Location: /admin?resultado=4');
+                    }
                 }
             }
         }
