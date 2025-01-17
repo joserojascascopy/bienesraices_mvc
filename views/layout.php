@@ -6,10 +6,6 @@ if (!isset($_SESSION)) {
 
 $auth = $_SESSION['login'] ?? false;
 
-if(!isset($inicio)) {
-    $inicio = false;
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +23,7 @@ if(!isset($inicio)) {
     <header class="header <?php echo $inicio ? 'inicio' : ''; ?>">
         <div class="contenedor contenido-header">
             <div class="barra">
-                <a href="/index.php">
+                <a href="/">
                     <img class="logo-header" src="/build/img/logo.svg" alt="Logo">
                 </a>
                 <div class="mobile-menu">
@@ -35,14 +31,14 @@ if(!isset($inicio)) {
                 </div>
                 <div class="nav-right">
                     <nav class="navegacion">
-                        <a href="/nosotros.php">Nosotros</a>
-                        <a href="/anuncios.php">Anuncios</a>
-                        <a href="/blog.php">Blog</a>
-                        <a href="/contacto.php">Contacto</a>
+                        <a href="/nosotros">Nosotros</a>
+                        <a href="/propiedades">Anuncios</a>
+                        <a href="/blog">Blog</a>
+                        <a href="/contacto">Contacto</a>
                         <?php if (!$auth) : ?>
-                            <a href="/login.php">Sign in</a>
+                            <a href="/login">Sign in</a>
                         <?php else : ?>
-                            <a href="/cerrar-sesion.php">Cerrar sesión</a>
+                            <a href="/cerrar-sesion">Cerrar sesión</a>
                         <?php endif; ?>
                     </nav> <!-- .navegacion -->
                     <div class="dark-mode">
@@ -51,7 +47,7 @@ if(!isset($inicio)) {
                 </div>
             </div> <!-- .barra -->
 
-            <?php if ($inicio) { ?>
+            <?php if (isset($inicio)) { ?>
                 <h1>Venta de Casas y Departamentos Exclusivos de Lujo</h1>
             <?php } ?>
 
@@ -65,10 +61,10 @@ if(!isset($inicio)) {
     <footer class="footer seccion">
         <div class="contenedor contenedor-footer">
             <nav class="navegacion">
-                <a href="/nosotros.php">Nosotros</a>
-                <a href="/anuncios.php">Anuncios</a>
-                <a href="/blog.php">Blog</a>
-                <a href="/contacto.php">Contacto</a>
+                <a href="/nosotros">Nosotros</a>
+                <a href="/propiedades">Anuncios</a>
+                <a href="/blog">Blog</a>
+                <a href="/contacto">Contacto</a>
             </nav> <!-- .navegacion -->
         </div> <!-- .contenedor-footer -->
 
