@@ -9,6 +9,36 @@ function eventListeners() {
 
     mobileMenu.addEventListener('click', navegacionResponsive) // Le agregamos un Event Listener de 'click' que ejecuta la función navegacionResponsive
     botonDarkMode.addEventListener('click', darkMode)
+
+    // Muestra campos condicionales
+
+    const metodoContacto = document.querySelectorAll('input[name="contacto[contacto]"]'); // .querySelectorAll(), no se le puede asignar un evento
+
+    metodoContacto.forEach(input => input.addEventListener('click', mostrarCampo));
+}
+
+function mostrarCampo(e) {
+    const contactoDiv = document.querySelector('#contacto');
+
+    if(e.target.value === 'telefono') {
+        contactoDiv.innerHTML = `
+            <label for="telefono"></label>
+            <input type="tel" placeholder="Tú teléfono" id="telefono" name="contacto[telefono]">
+
+            <p>Elija la fecha y hora para contactarlo</p>
+
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha" name="contacto[fecha]">
+
+            <label for="hora">Hora:</label>
+            <input type="time" id="hora" min="09:00" max="18:00" name="contacto[hora]">
+        `;
+    }else {
+        contactoDiv.innerHTML = `
+            <label for="email"></label>
+            <input type="email" placeholder="Tú e-mail" id="email" name="contacto[email]">
+        `;
+    }
 }
 
 function navegacionResponsive() {

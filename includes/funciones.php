@@ -65,6 +65,10 @@ function mostrarMensaje($resultado) {
         case 6:
             $mensaje = 'Vendedor Actualizado Correctamente';
             break;
+        case 7:
+            $mensaje = 'Mensaje Enviado Correctamente';
+        case 8:
+            $mensaje = 'El mensaje no se pudo enviar...';
         default:
             $mensaje = false;
             break;
