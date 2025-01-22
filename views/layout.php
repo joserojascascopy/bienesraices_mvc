@@ -38,7 +38,7 @@ $auth = $_SESSION['login'] ?? false;
                         <?php if (!$auth) : ?>
                             <a href="/login">Sign in</a>
                         <?php else : ?>
-                            <a href="/cerrar-sesion">Cerrar sesión</a>
+                            <a href="/logout">Cerrar sesión</a>
                         <?php endif; ?>
                     </nav> <!-- .navegacion -->
                     <div class="dark-mode">
